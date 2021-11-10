@@ -1,0 +1,41 @@
+<div class="p-4">
+  <h5 *ngIf="!loggedIn" class="p-2">Log in to see your friends.</h5>
+  <mat-tab-group *ngIf="loggedIn">
+    <mat-tab label="Friends">
+      <div class="pb-2">
+        <div *ngFor="let friend of areFriends">
+          <div class="d-flex justify-content-end align-items-center p-2">
+            <span class="flex-fill align-text-center">{{
+              friend.username
+            }}</span>
+            <button (click)=goToProfile(friend.id) class="mx-2 btn btn-outline-dark" mat-mini-fab color="basic">
+              <fa-icon [icon]="['far', 'user-circle']"></fa-icon>
+            </button>
+            <button (click)=openChat(friend.id) class="btn btn-outline-dark" mat-mini-fab color="basic">
+              <fa-icon [icon]="['far', 'comment']"></fa-icon>
+            </button>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Requests"> 
+      <div class="pb-2">
+        <div *ngFor="let friend of areRequests">
+          <div class="d-flex justify-content-end align-items-center p-2">
+            <span class="flex-fill align-text-center">{{
+              friend.username
+            }}</span>
+            <button (click)=acceptRequest(friend) class="mx-2" mat-mini-fab color="basic" class="mx-2 btn btn-outline-success">
+              <fa-icon [icon]="['far', 'check-circle']"></fa-icon>
+            </button>
+            <button (click)=openChat(friend.id) mat-mini-fab color="basic" class="btn btn-outline-danger">
+              <fa-icon [icon]="['far', 'times-circle']"></fa-icon>
+            </button>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+     </mat-tab>
+  </mat-tab-group>
+</div>

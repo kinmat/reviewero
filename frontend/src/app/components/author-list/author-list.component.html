@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="card col-3 m-2" *ngFor="let author of authors">
+        <div class="card-body">
+          <h5>{{author.fullName}}</h5>
+          <img class="w-100" src="https://dummyimage.com/200x250/000/fff.png" alt="not found image" />
+          <div class="py-2">
+             <a (click)="onAuthorClick(author.id)" class="btn btn-outline-secondary">Read more</a>
+          </div>
+         
+        </div>
+    </div>
+    </div>
+    </div>

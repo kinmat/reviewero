@@ -1,0 +1,6 @@
+.syn {
+    max-height: 3em;
+    word-wrap: normal;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+}

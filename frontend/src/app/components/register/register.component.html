@@ -1,0 +1,54 @@
+<div class="m-5">
+  <h2>Register here.</h2>
+  <h4>Start reviewing today.</h4>
+  <div class="p-4">
+    <form (ngSubmit)="register()" [formGroup]="form">
+      <div class="form-group">
+        <label for="name">Username</label>
+        <input
+          type="text"
+          [(ngModel)]="user.username"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Enter your username"
+          formControlName="username"
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          [(ngModel)]="user.email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="Enter your email address"
+          formControlName="email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          [(ngModel)]="user.password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          formControlName="password"
+        />
+      </div>
+      <div class="alert alert-danger" *ngIf="isUsernameNOTValid">
+        Username already registered
+      </div>
+      <button
+        type="submit"
+        [disabled]="!form.valid"
+        class="btn btn-outline-secondary"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

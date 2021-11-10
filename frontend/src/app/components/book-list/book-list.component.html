@@ -1,0 +1,15 @@
+<div class="container-fluid">
+<div class="row">
+    <div class="card col-md-3 col-sm-12 m-2" *ngFor="let book of books">
+    <div class="card-body">
+      <h5>{{book.title}}</h5>
+      <img class="w-100" src="https://dummyimage.com/200x250/000/fff.png" alt="not found image" />
+      <div class="card-text py-2" >
+        by
+          <a *ngFor="let author of book.authors" class="dark-link" (click)="onAuthorClick(author.id)">{{author.fullName}} </a>
+      </div>    
+      <a (click)="goToBookDetails(book.id)" class="btn btn-outline-secondary">Read more</a>
+    </div>
+</div>
+</div>
+</div>

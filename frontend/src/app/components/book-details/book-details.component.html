@@ -1,0 +1,28 @@
+<div class="m-2 p-2">
+  <h1>{{ book.title }}</h1>
+  <h5>
+    by
+    <a
+      *ngFor="let author of book.authors"
+      class="dark-link"
+      (click)="onAuthorClick(author.id)"
+      >{{ author.fullName }}
+    </a>
+  </h5>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <p>{{ book.synopsis }}</p>
+      <p>
+        <i> {{ book.pages }} pages </i>
+      </p>
+    </div>
+    <div class="col-6">
+      <img
+        src="https://dummyimage.com/300x400/000/fff.png"
+        alt="not found image"
+      />
+    </div>
+  </div>
+</div>

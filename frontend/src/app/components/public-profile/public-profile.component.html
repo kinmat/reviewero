@@ -1,0 +1,50 @@
+<div class="col-md-10 col-sm-12">
+  <div
+    class="
+      w-100
+      d-flex
+      justify-content-between
+      my-2
+      p-4
+      bg-light
+      border
+      rounded
+    "
+  >
+    <h2>
+      <strong>{{ profileUser.username }}</strong
+      >'s profile
+    </h2>
+    <button
+      class="btn btn-outline-secondary"
+      *ngIf="!isFriend && loggedInUser && !requested"
+      (click)="addFriend()"
+    >
+    <fa-icon class="mr-2" [icon]="['fas', 'user-plus']"></fa-icon>
+      Add as Friend
+      
+    </button>
+
+    <button
+    class="btn btn-outline-secondary"
+    *ngIf="requested"
+    disabled
+  >
+  <fa-icon class="mr-2" [icon]="['far', 'check-circle']"></fa-icon>
+    Request sent!
+    
+  </button>
+  </div>
+  <div class="pt-4 ms-2">
+    <h6>E-mail address: {{ profileUser.email }}</h6>
+
+    <h4 class="py-4">{{ profileUser.username }}'s book lists:</h4>
+    <div class="pb-2">
+      <h6>Read:</h6>
+    </div>
+    <hr />
+    <div class="pb-2">
+      <h6>To-Read:</h6>
+    </div>
+  </div>
+</div>
