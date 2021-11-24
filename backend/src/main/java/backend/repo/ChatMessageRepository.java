@@ -10,4 +10,5 @@ import backend.model.ChatMessage;
 
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
+	List<ChatMessage> findByRecieverAndSender(String reciever, String sender);
 }

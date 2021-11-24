@@ -20,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.model.Book;
+import backend.model.BookListItem;
+import backend.model.ChatMessage;
 import backend.model.Friendship;
 import backend.model.FriendshipId;
 import backend.model.User;
+import backend.repo.BookListItemRepository;
+import backend.repo.ChatMessageRepository;
 import backend.repo.FriendshipRepository;
 import backend.repo.UserRepository;
 
@@ -34,6 +38,9 @@ public class UserController {
 	
 	@Autowired
 	FriendshipRepository friendRepo;
+	
+	@Autowired 
+	private ChatMessageRepository chatRepo;
 	
     @RequestMapping("/user")
     public Principal user(HttpServletRequest request) {
@@ -53,11 +60,6 @@ public class UserController {
     	return userRepo.findByUsernameContains(username);
     }
     
- /*   @RequestMapping("/api/friends/{id}")
-    public List<Long> getFriends(@PathParam("id") Long id) {
-    	return friendRepo.fetchFriends(id);
-    }
-    */
     
     @PostMapping("api/friend/add") 
     public Friendship addFriendRequest(@RequestBody Friendship fr) {
@@ -70,6 +72,15 @@ public class UserController {
     	f.setAccepted(true);
     	friendRepo.saveAndFlush(f);
     	return f.getRequestee();
+    }
+    
+    @PostMapping("api/last-messages")
+    public List<ChatMessage> getLastMessagesByFriendship(@RequestBody Friendship fr) {
+    	String userOneId=fr.getRequestee().getId().toString();
+    	String userTwoId = fr.getRequester().getId().toString();	
+    	List<ChatMessage> messages= chatRepo.findByRecieverAndSender(userOneId, userTwoId);
+    	messages.addAll(chatRepo.findByRecieverAndSender(userTwoId, userOneId));
+    	return messages;
     }
     
     

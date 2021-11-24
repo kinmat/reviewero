@@ -37,11 +37,11 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import { faComment, faUserCircle, faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { MatButtonModule } from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
-import { DioComponent } from './components/dio/dio.component';
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { ChatComponent } from './components/chat/chat.component';
 import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
 import { myRxStompConfig } from './my-rx-stomp.config';
+import { CollectionComponent } from './components/collection/collection.component';
 
 @NgModule({
   declarations: [
@@ -61,8 +61,8 @@ import { myRxStompConfig } from './my-rx-stomp.config';
     AuthorListComponent,
     UserListComponent,
     PublicProfileComponent,
-    DioComponent,
-    ChatComponent
+    ChatComponent,
+    CollectionComponent
   ],
   imports: [
     MatSidenavModule,
@@ -105,6 +105,6 @@ import { myRxStompConfig } from './my-rx-stomp.config';
 export class AppModule {
   constructor(library: FaIconLibrary) {
     // Add multiple icons to the library
-    library.addIcons(faComment, faUserCircle, faUserPlus, faCheckCircle, faTimesCircle);
+    library.addIcons(faComment, faUserCircle, faUserPlus, faCheckCircle, faTimesCircle, faPlus);
   }
 }

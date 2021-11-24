@@ -14,13 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import backend.model.Author;
 import backend.model.Book;
+import backend.model.BookListItem;
+import backend.model.BookState;
+import backend.repo.BookListItemRepository;
 import backend.repo.BookRepository;
+import backend.repo.StateRepository;
 
 @RestController
 @CrossOrigin
 public class BookController {
 	@Autowired
 	BookRepository bookRepo;
+	
+	@Autowired 
+	private BookListItemRepository itemRepo;
+	
+	@Autowired 
+	private StateRepository stateRepo;
+	
 	
     @RequestMapping("/api/books")
     public Iterable<Book> getAllBooks() {
@@ -40,6 +51,25 @@ public class BookController {
     @RequestMapping("/api/books/search")
     public List<Book> searchBookByTitle(@PathParam("title") String title) {
     	return bookRepo.findByTitleContains(title);
+    }
+    
+    @RequestMapping("/api/list/states")
+    public List<BookState> getBookAllStates() {
+    	return stateRepo.findAll();
+    }
+    
+    @PostMapping("api/list/add-book") 
+    public BookListItem addBookListItem(@RequestBody BookListItem item) {
+    	
+    	return itemRepo.save(item);
+    }
+    
+    @PostMapping("api/list/change-book-state") 
+    public BookListItem changeBookListItemState(@RequestBody BookListItem item) {
+    	BookListItem i=itemRepo.findByBookIdAndUserId(item.getBook().getId(), item.getUser().getId());
+    	i.setState(item.getState());
+    	itemRepo.saveAndFlush(i);
+    	return i;
     }
     
 }

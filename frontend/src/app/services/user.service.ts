@@ -1,9 +1,11 @@
+import { BookListItem } from './../model/book-list-item';
 import { Friendship } from './../model/friendship';
 import { User } from './../model/user';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { Book } from '../model/book';
 
 
 const API_URL = 'http://localhost:8081/api/test/';
@@ -65,5 +67,20 @@ export class UserService {
       requester: requester,
       requestee: requestee,
     },httpOptions)
+  }
+
+  public getBookListByState(user: User, state: string): Book[] {
+    let books: Book[]=[];
+    for (var b of user.addedBookList) {
+      if(b.state.name==state)  books.push(b.book)
+    }
+    return books;
+  }
+
+  public getIsBookAsInUsersList(user: User, book: Book): BookListItem {
+    for (var b of user.addedBookList) {
+      if (b.book.id == book.id) return b;
+    }
+    return null;
   }
 }

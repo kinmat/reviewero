@@ -1,5 +1,7 @@
 package backend.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,20 +15,39 @@ public class ChatMessage {
 	private String sender;
 	private String reciever;
 	private String content;
+	private Date dateSent;
 	
-	public ChatMessage(Long id, String sender, String reciever, String content) {
+
+	public ChatMessage(Long id, String sender, String reciever, String content, Date dateSent) {
 		super();
 		Id = id;
 		this.sender = sender;
 		this.reciever = reciever;
 		this.content = content;
+		this.dateSent = dateSent;
 	}
-	public ChatMessage(String sender, String reciever, String content) {
+	
+	
+	public ChatMessage(String sender, String reciever, String content, Date dateSent) {
 		super();
 		this.sender = sender;
 		this.reciever = reciever;
 		this.content = content;
+		this.dateSent = dateSent;
 	}
+
+	
+
+	public Date getDateSent() {
+		return dateSent;
+	}
+
+
+	public void setDateSent(Date dateSent) {
+		this.dateSent = dateSent;
+	}
+
+
 	public ChatMessage() {
 		super();
 		// TODO Auto-generated constructor stub

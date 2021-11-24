@@ -33,8 +33,9 @@ public class User {
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
-	//@OneToMany( mappedBy="requester", cascade=CascadeType.ALL, orphanRemoval = true)
-	//   private Set<Friendship> friends = new HashSet<>();
+	@OneToMany(mappedBy = "user")
+	@JsonIgnoreProperties(value="user", allowSetters = true)
+	private Set<BookListItem> addedBookList = new HashSet<>();
 	
 	@OneToMany(mappedBy = "requester")
 	@JsonIgnoreProperties("requester")
@@ -109,4 +110,13 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
+	public Set<BookListItem> getAddedBookList() {
+		return addedBookList;
+	}
+
+	public void setAddedBookList(Set<BookListItem> addedBookList) {
+		this.addedBookList = addedBookList;
+	}
+	
 }

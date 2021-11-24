@@ -1,9 +1,8 @@
-<mat-drawer-container class="h-100 w-100 bg-white"  autosize>
+<mat-drawer-container class="min-vh-100 w-100 bg-white"  autosize>
     <mat-drawer #drawer class="bg-light" mode="side">
       <app-sidebar (newRoute)="changeRoute($event)"></app-sidebar>
     </mat-drawer>
-  
-    <div class="d-flex justify-content-start">
+    <div class="d-flex">
         <div>
         <button class="btn btn-outline-secondary" (click)="drawer.toggle()">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
@@ -14,10 +13,10 @@
           </button>  
         </div>
 
-        <div class="container flex-fill">
+        <div class="container">
             <router-outlet></router-outlet>
         </div>
     </div>
-    
-  
+      
+
   </mat-drawer-container>

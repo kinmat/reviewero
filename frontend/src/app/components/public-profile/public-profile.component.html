@@ -20,20 +20,14 @@
       *ngIf="!isFriend && loggedInUser && !requested"
       (click)="addFriend()"
     >
-    <fa-icon class="mr-2" [icon]="['fas', 'user-plus']"></fa-icon>
+      <fa-icon class="mr-2" [icon]="['fas', 'user-plus']"></fa-icon>
       Add as Friend
-      
     </button>
 
-    <button
-    class="btn btn-outline-secondary"
-    *ngIf="requested"
-    disabled
-  >
-  <fa-icon class="mr-2" [icon]="['far', 'check-circle']"></fa-icon>
-    Request sent!
-    
-  </button>
+    <button class="btn btn-outline-secondary" *ngIf="requested" disabled>
+      <fa-icon class="mr-2" [icon]="['far', 'check-circle']"></fa-icon>
+      Request sent!
+    </button>
   </div>
   <div class="pt-4 ms-2">
     <h6>E-mail address: {{ profileUser.email }}</h6>
@@ -41,10 +35,12 @@
     <h4 class="py-4">{{ profileUser.username }}'s book lists:</h4>
     <div class="pb-2">
       <h6>Read:</h6>
+      <app-book-list (newRoute)="changeRoute($event)" [books]="readList"></app-book-list>
     </div>
     <hr />
     <div class="pb-2">
       <h6>To-Read:</h6>
+      <app-book-list (newRoute)="changeRoute($event)" [books]="toReadList"></app-book-list>
     </div>
   </div>
 </div>

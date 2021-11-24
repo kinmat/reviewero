@@ -1,7 +1,48 @@
-<input class="form-control" type="text" placeholder="message" [(ngModel)]="input">
-<button class="btn btn-success" (click)="sendMessage()">Send</button>
-<div class="content">
-  <div *ngFor="let msg of messageService.msg">
-    {{msg}}
+<div class="p-2 h-100 w-100">
+  <h2>
+    Chat with <strong>{{ otherUser.username }}</strong>
+  </h2>
+  <div class="d-flex flex-column p-2 border">
+    <div class="chat"  id="style-1">
+      <div *ngFor="let msg of msgs">
+        <div
+          class="col-7 my-3"
+          *ngIf="isLoggedInUserReciever(msg); else elseBlock"
+        >
+          <small class="text-muted">{{ formatDate(msg.dateSent) }}</small>
+          <div class="rounded bg-light p-2">
+            {{ msg.content }}
+          </div>
+        </div>
+        <ng-template #elseBlock>
+          <div class="d-flex justify-content-end">
+            <div class="col-7 my-2">
+              <small class="text-muted">{{ formatDate(msg.dateSent) }}</small>
+              <div class="p-2 rounded text-white bg-secondary">
+                {{ msg.content }}
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <form class="input-group">
+      <div class="container p-2 m-2">
+        <div class="row">
+          <div class="col-12 d-flex">
+            <input
+              class="form-control mx-2"
+              type="text"
+              placeholder="Type your message here..."
+              name="input"
+              [(ngModel)]="input"
+            />
+            <button class="btn btn-outline-secondary" (click)="sendMessage()">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

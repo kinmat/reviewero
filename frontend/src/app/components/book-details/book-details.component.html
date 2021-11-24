@@ -26,3 +26,32 @@
     </div>
   </div>
 </div>
+<form  *ngIf="!isBookAdded" class="form-inline">
+  <div class="form-group mb-2">
+<select
+  class="browser-default custom-select"
+  id="floatingSelectGrid"
+  aria-label="Floating label select example"
+  (selectionChange)="onSelectionChanged($event)"
+  name="option"
+  [(ngModel)]="state"
+>
+  <option *ngFor="let opt of options" [value]="opt">
+    {{ opt.name }}
+  </option>
+</select>
+<button
+  class="btn btn-outline-secondary"
+ 
+  (click)="addBook()"
+>
+  <fa-icon class="mr-2" [icon]="['fas', 'plus']"></fa-icon>
+  Add Book
+</button>
+  </div>
+  
+</form>
+<button class="btn btn-outline-secondary" *ngIf="isBookAdded" disabled>
+  <fa-icon class="mr-2" [icon]="['far', 'check-circle']"></fa-icon>
+  Book added
+</button>

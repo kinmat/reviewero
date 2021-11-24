@@ -1,8 +1,10 @@
+import { BookListItem } from './../../model/book-list-item';
 import { UserService } from './../../services/user.service';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Book } from 'src/app/model/book';
 
 @Component({
   selector: 'app-public-profile',
@@ -14,11 +16,14 @@ export class PublicProfileComponent implements OnInit {
   profileUser: User = new User();
   requested: boolean;
   isFriend: boolean;
+  toReadList: Book[] = [];
+  readList: Book[]=[];
 
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
     this.authService.currentUser.subscribe((data) => {
       this.loggedInUser = data;
@@ -26,12 +31,21 @@ export class PublicProfileComponent implements OnInit {
         let id = +params['id']; // (+) converts string 'id' to a number
         this.authService.getUserById(id).subscribe((profile) => {
           this.profileUser = profile;
+          this.setToReadList();
+          this.setReadList();
           this.areFriends();
           this.setRequested();
         });
       });
      
     });
+  }
+  setToReadList() {
+    this.toReadList = this.userService.getBookListByState(this.profileUser, "to_read");
+  }
+
+  setReadList() {
+    this.readList = this.userService.getBookListByState(this.profileUser, "read");
   }
 
   areFriends() {
@@ -58,6 +72,11 @@ export class PublicProfileComponent implements OnInit {
     this.userService.addFriendship(this.loggedInUser, this.profileUser).subscribe(() =>
       this.authService.refreshSave())
       this.requested = true;
+  }
+
+  changeRoute(event) {
+    let url = String(event);
+    this.router.navigateByUrl(url);
   }
 
   ngOnInit(): void {}

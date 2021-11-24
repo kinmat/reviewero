@@ -4,7 +4,9 @@ import { Injectable } from '@angular/core';
 import { Stomp } from '@stomp/stompjs/esm6';
 import * as SockJS from 'sockjs-client';
 import { User } from '../model/user';
+import { HttpClient } from '@angular/common/http';
 
+const F_URL = 'http://localhost:8081/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class WebSocketService {
   public msg = [];
   private user: User;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private http: HttpClient) {
     this.authService.currentUser.subscribe(data => {
       this.user = data;
       this.initializeWebSocketConnection();
@@ -25,25 +27,18 @@ export class WebSocketService {
     const serverUrl = 'http://localhost:8081/socketjs';
     const ws = new SockJS(serverUrl);
     this.stompClient = Stomp.over(ws);
-    const that = this;
-    // tslint:disable-next-line:only-arrow-functions
-    this.stompClient.connect({}, function(frame) {
-      that.stompClient.subscribe("/user/" + that.user.id + "/queue/messages", (message) => {
-        that.msg.push(JSON.parse(message.body));
-        
-      });
-    });
   }
 
   
 
-  sendMessage(message, id) {
-    var newMsg = {
-      sender: this.user.id,
-      reciever: id,
-      content: message
-    }
-    this.stompClient.send('/app/chat', {}, JSON.stringify(newMsg));
-    this.msg.push(message)
+  sendMessage(message) {
+    this.stompClient.send('/app/chat', {}, JSON.stringify(message));
+  }
+
+  getLastMessages(userOne, userTwo) {
+    return this.http.post<ChatMessage[]>(F_URL + 'last-messages', {
+      requester: {id: userOne},
+      requestee: {id: userTwo},
+    })
   }
 }
