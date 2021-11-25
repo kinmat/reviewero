@@ -5,12 +5,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BookListItem } from '../model/book-list-item';
+import { Review } from '../model/review';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 const URL = 'http://localhost:8081/api/books/'
 const L_URL = 'http://localhost:8081/api/list/'
+const R_URL = 'http://localhost:8081/api/review/'
 
 
 @Injectable({
@@ -38,7 +40,6 @@ export class BookService {
 
   public getBooksByTitle(title: string): Observable<Book[]> {
     const params = new HttpParams().append('title', title);
-    console.log("title")
     return this.http.get<Book[]>(URL + `search/`, {params})
   }
 
@@ -51,8 +52,33 @@ export class BookService {
     },httpOptions)
   }
 
+  public changeBookListItemState(item: BookListItem) {
+    return this.http.post<BookListItem>(L_URL + `change-book-state`, {
+      user: item.user,
+      book: item.book,
+      state: item.state,
+      dateAdded: item.dateAdded
+    },httpOptions)
+  }
+
   public getAllBookStates() {
     return this.http.get<BookState[]>(L_URL + `states`, httpOptions)
   }
+
+  public getReviewsByBookId(id: number): Observable<Review[]> {
+    const params = new HttpParams().append('book_id', id.toString());
+    return this.http.get<Review[]>(R_URL, {params})
+  }
+
+  public addReview(review: Review) {
+    return this.http.post<Review>(R_URL + `add`, {
+      user: review.user,
+      book: review.book,
+      rating: review.rating,
+      text: review.text,
+      dateAdded: review.dateAdded
+    },httpOptions)
+  }
+
   
 }

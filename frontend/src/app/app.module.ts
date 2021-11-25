@@ -42,6 +42,8 @@ import { ChatComponent } from './components/chat/chat.component';
 import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
 import { myRxStompConfig } from './my-rx-stomp.config';
 import { CollectionComponent } from './components/collection/collection.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatSlider, MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,7 @@ import { CollectionComponent } from './components/collection/collection.componen
     BrowserModule,
     CommonModule,
     AppRoutingModule,
+    MatSliderModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
@@ -77,6 +80,7 @@ import { CollectionComponent } from './components/collection/collection.componen
     MatTabsModule,
     MatListModule,
     MatMenuModule,
+    MatExpansionModule,
     FontAwesomeModule,
     MatButtonModule,
     MatDividerModule,
@@ -90,6 +94,7 @@ import { CollectionComponent } from './components/collection/collection.componen
       { path: 'authors/:id', component: AuthorDetailsComponent },
       { path: 'user/:id', component: PublicProfileComponent},
       { path: 'search', component: SearchComponent },
+      { path: 'collection', component: CollectionComponent },
       { path: 'chat/user/:id', component: ChatComponent },
     ]),
     BrowserAnimationsModule,

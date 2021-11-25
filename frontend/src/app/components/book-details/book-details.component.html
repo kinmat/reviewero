@@ -26,32 +26,95 @@
     </div>
   </div>
 </div>
-<form  *ngIf="!isBookAdded" class="form-inline">
+<form *ngIf="!isBookAdded" class="form-inline">
   <div class="form-group mb-2">
-<select
-  class="browser-default custom-select"
-  id="floatingSelectGrid"
-  aria-label="Floating label select example"
-  (selectionChange)="onSelectionChanged($event)"
-  name="option"
-  [(ngModel)]="state"
->
-  <option *ngFor="let opt of options" [value]="opt">
-    {{ opt.name }}
-  </option>
-</select>
-<button
-  class="btn btn-outline-secondary"
- 
-  (click)="addBook()"
->
-  <fa-icon class="mr-2" [icon]="['fas', 'plus']"></fa-icon>
-  Add Book
-</button>
+    <select
+      class="browser-default custom-select"
+      id="floatingSelectGrid"
+      aria-label="Floating label select example"
+      (selectionChange)="onSelectionChanged($event)"
+      name="option"
+      [(ngModel)]="stateId"
+    >
+      <option *ngFor="let opt of options" [value]="opt.id">
+        {{ opt.name }}
+      </option>
+    </select>
+    <button class="btn btn-outline-secondary" (click)="addBook()">
+      <fa-icon class="mr-2" [icon]="['fas', 'plus']"></fa-icon>
+      Add Book
+    </button>
   </div>
-  
 </form>
-<button class="btn btn-outline-secondary" *ngIf="isBookAdded" disabled>
-  <fa-icon class="mr-2" [icon]="['far', 'check-circle']"></fa-icon>
-  Book added
-</button>
+<div *ngIf="isBookAdded" class="m-4 d-flex align-items-start">
+  <button class="btn p-2 btn-outline-secondary" disabled>
+    <fa-icon class="mr-2" [icon]="['far', 'check-circle']"></fa-icon>
+    Book added
+  </button>
+  <mat-accordion class="col-auto">
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Change the book's state in your collection
+        </mat-panel-title>
+        <mat-panel-description>
+          Currently: {{ usersBookItem.state.name }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form class="form-inline">
+        <div class="form-group mb-2">
+          <select
+            class="browser-default custom-select"
+            id="floatingSelectGrid"
+            aria-label="Floating label select example"
+            name="option"
+            [(ngModel)]="stateId"
+          >
+            <option *ngFor="let opt of options" [value]="opt.id">
+              {{ opt.name }}
+            </option>
+          </select>
+          <button
+            class="btn btn-outline-secondary mx-2"
+            (click)="changeState()"
+          >
+            Change state
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<div class="d-flex justify-content-between">
+  <h3 class="mt-4">Reviews</h3>
+</div>
+
+<hr />
+<mat-accordion *ngIf="isBookAdded && !userHasReview">
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <fa-icon class="mr-2" [icon]="['fas', 'plus']"></fa-icon> Add new review
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form>
+      Rating: <mat-slider [(ngModel)]="newReview.rating" name="rating" thumbLabel min="1" max="10" step="1" value="5"></mat-slider>
+      <textarea [(ngModel)]="newReview.text"  placeholder="Tell us your thoughts here..." class="form-control my-2" name="textarea" rows="3"></textarea>
+        <button class=" mt-2 btn btn-outline-secondary" (click)="addReview()">
+          Submit
+        </button>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+<div class="my-4 card" *ngFor="let rev of reviews">
+  <div class="card-header">
+    <strong>{{rev.user.username}}</strong>
+  </div>
+<div class="card-body">
+  <h5 class="card-title">{{rev.rating}}/10</h5>
+  <p class="card-text"> {{rev.text}}</p>
+</div>
+<div class="card-footer text-muted">
+  {{formatDate(rev.dateAdded)}}
+</div>
+</div>

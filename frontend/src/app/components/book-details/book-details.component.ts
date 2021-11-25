@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from 'src/app/services/book.service';
 import { User } from 'src/app/model/user';
 import { BookState } from 'src/app/model/book-state';
+import { Review } from 'src/app/model/review';
 
 @Component({
   selector: 'app-book-details',
@@ -19,8 +20,11 @@ export class BookDetailsComponent {
   isBookAdded: boolean;
   usersBookItem: BookListItem;
   currentUser: User;
-  state: any;
+  stateId: number;
   options: BookState[];
+  reviews: Review[] = [];
+  userHasReview: boolean;
+  newReview: Review= new Review();
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +54,32 @@ export class BookDetailsComponent {
     this.bookService.getBookByID(id).subscribe((data) => {
       this.book = data;
       this.setIsBookAdded();
+      this.setReviews();
     });
+  }
+  setReviews() {
+    this.bookService.getReviewsByBookId(this.book.id).subscribe(data => {
+      this.reviews = data;
+      let rev = data.find(r => r.user.id == this.currentUser.id)
+      console.log(rev)
+      if(rev) this.userHasReview = true;
+      else this.userHasReview = false;
+      console.log(this.userHasReview)
+      
+   })
+  }
+
+  formatDate(date) {
+    return new Date(date).toLocaleString()
+  }
+
+  addReview() {
+    this.newReview.user = this.currentUser;
+    this.newReview.book = this.book;
+    this.newReview.dateAdded = new Date();
+    this.bookService.addReview(this.newReview).subscribe(func => {
+      this.setReviews()
+    })
   }
 
   onAuthorClick(id: number) {
@@ -68,23 +97,35 @@ export class BookDetailsComponent {
 
   addBook() {
     this.isBookAdded = true;
+    this.userHasReview = false;
+    let state = this.options.find(o => o.id == this.stateId);
     let item = new BookListItem(
       this.currentUser,
       this.book,
-      this.state,
+      state,
       new Date()
     );
-    this.bookService.addBookListItem(item).subscribe();
-  }
-
-  onSelectionChanged(event) {
-    this.state = event;
+    this.bookService.addBookListItem(item).subscribe(data => {
+      this.usersBookItem=data
+    });
   }
 
   setStates() {
     this.bookService.getAllBookStates().subscribe((data) => {
       this.options = data;
-      this.state = data[0];
+      this.stateId = data[0].id;
     });
+  }
+
+  changeState() {
+    let state = this.options.find(o => o.id == this.stateId);
+    this.usersBookItem.state = state;
+    let item = new BookListItem(
+      this.currentUser,
+      this.book,
+      state,
+      new Date()
+    );
+    this.bookService.changeBookListItemState(item).subscribe();
   }
 }

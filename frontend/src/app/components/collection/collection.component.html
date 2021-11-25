@@ -1,1 +1,13 @@
-<p>collection works!</p>
+
+<h1 class="p-4 display-4">My collection.</h1>
+<div class="p-4">
+    <div class="pb-2">
+    <h3>Read:</h3>
+    <app-book-list (newRoute)="changeRoute($event)" [books]="readList"></app-book-list>
+  </div>
+  <hr />
+  <div class="pb-2">
+    <h3>To-Read:</h3>
+    <app-book-list (newRoute)="changeRoute($event)" [books]="toReadList"></app-book-list>
+  </div>
+</div>

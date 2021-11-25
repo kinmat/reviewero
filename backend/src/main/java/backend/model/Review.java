@@ -13,77 +13,65 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "user_books")
-public class BookListItem {
+@Table(name = "reviews")
+public class Review {
 	@EmbeddedId
-	BookListItemId bookListId= new BookListItemId();
+	ReviewId reviewId= new ReviewId();
 	
 	@ManyToOne
 	@MapsId("userId")
+	@JsonIgnoreProperties({"requestee", "requester"})
 	private User user;
 	
 	@ManyToOne
 	@MapsId("bookId")
 	private Book book;
 	
-	
-    @ManyToOne (cascade = {CascadeType.ALL})
-    @JoinColumn(name="state_id")
-	private BookState state;
-	
+	private int rating;
+	private String text;	
 	private Date dateAdded;
 	
-	public BookListItem() {
-		super();
-	}
-	
-	public BookListItem(BookListItemId bookListId, User user, Book book, BookState state, Date dateAdded) {
-		super();
-		this.bookListId = bookListId;
-		this.user = user;
-		this.book = book;
-		this.state = state;
-		this.dateAdded = dateAdded;
-	}
-	
-
-	public BookListItem(User user, Book book, BookState state, Date dateAdded) {
+	public Review(User user, Book book, int rating, String text, Date dateAdded) {
 		super();
 		this.user = user;
 		this.book = book;
-		this.state = state;
+		this.rating = rating;
+		this.text = text;
 		this.dateAdded = dateAdded;
 	}
-
-	public BookListItemId getBookListId() {
-		return bookListId;
+	public Review() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-
-	public void setBookListId(BookListItemId bookListId) {
-		this.bookListId = bookListId;
+	public ReviewId getReviewId() {
+		return reviewId;
 	}
-
+	public void setReviewId(ReviewId reviewId) {
+		this.reviewId = reviewId;
+	}
 	public User getUser() {
 		return user;
 	}
-
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	public Book getBook() {
 		return book;
 	}
-
 	public void setBook(Book book) {
 		this.book = book;
 	}
-
-	public BookState getState() {
-		return state;
+	public int getRating() {
+		return rating;
 	}
-	public void setState(BookState state) {
-		this.state = state;
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
 	}
 	public Date getDateAdded() {
 		return dateAdded;
@@ -92,5 +80,6 @@ public class BookListItem {
 		this.dateAdded = dateAdded;
 	}
 
+	
 	
 }
