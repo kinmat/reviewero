@@ -1,18 +1,11 @@
 package backend.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import backend.model.ChatMessage;
-import backend.model.Friendship;
 import backend.repo.ChatMessageRepository;
 
 @Controller
@@ -27,14 +20,10 @@ public class ChatWebSocketHandler {
 	        this.template = template;
 	    }
 
-	    @MessageMapping("/send/message")
-	    public void sendMessage(String message){
-	        System.out.println(message);
-	        this.template.convertAndSend("/message",  message);
-	    }
-	    
-
-
+		/*
+		 * @MessageMapping("/send/message") public void sendMessage(String message){
+		 * this.template.convertAndSend("/message", message); }
+		 */
 
 	    @MessageMapping("/chat")
 	    public void processMessage(@Payload ChatMessage chatMessage) {  

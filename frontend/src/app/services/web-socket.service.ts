@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { ChatMessage } from 'src/app/model/chat-message';
 import { AuthService } from 'src/app/services/auth.service';
 import { Injectable } from '@angular/core';
@@ -6,7 +7,8 @@ import * as SockJS from 'sockjs-client';
 import { User } from '../model/user';
 import { HttpClient } from '@angular/common/http';
 
-const F_URL = 'http://localhost:8081/api/';
+const URL = environment.API_URL;
+const WS_URL = environment.WS_URL;
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +25,8 @@ export class WebSocketService {
     })
   }
 
-  initializeWebSocketConnection() {
-    const serverUrl = 'http://localhost:8081/socketjs';
-    const ws = new SockJS(serverUrl);
+  initializeWebSocketConnection() {;
+    const ws = new SockJS(WS_URL);
     this.stompClient = Stomp.over(ws);
   }
 
@@ -36,7 +37,7 @@ export class WebSocketService {
   }
 
   getLastMessages(userOne, userTwo) {
-    return this.http.post<ChatMessage[]>(F_URL + 'last-messages', {
+    return this.http.post<ChatMessage[]>(URL + 'last-messages', {
       requester: {id: userOne},
       requestee: {id: userTwo},
     })

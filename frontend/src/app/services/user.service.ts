@@ -2,15 +2,13 @@ import { BookListItem } from './../model/book-list-item';
 import { Friendship } from './../model/friendship';
 import { User } from './../model/user';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
 import { Book } from '../model/book';
+import { environment } from 'src/environments/environment';
 
+const F_URL = environment.API_URL +'friend/';
 
-const API_URL = 'http://localhost:8081/api/test/';
-const URL = 'http://localhost:8081/api/user/';
-const F_URL = 'http://localhost:8081/api/friend/';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -19,24 +17,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpClient, private authService: AuthService) { }
-
-  getPublicContent(): Observable<any> {
-    return this.http.get(API_URL + 'all', { responseType: 'text' });
-  }
-
-  getUserBoard(): Observable<any> {
-    return this.http.get(API_URL + 'user', { responseType: 'text' });
-  }
-
-  getModeratorBoard(): Observable<any> {
-    return this.http.get(API_URL + 'mod', { responseType: 'text' });
-  }
-
-  getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + 'admin', { responseType: 'text' });
-  }
-
+  constructor(private http: HttpClient) { }
 
   public getAcceptedFriends(user: User) {
     let friends: User[] = [];
@@ -44,6 +25,15 @@ export class UserService {
       if (f.accepted) friends.push(f.requestee)
     for (var r of user.requestee)
       if (r.accepted) friends.push(r.requester)   
+    return friends;
+  }
+
+  public getAllFriends(user: User) {
+    let friends: User[] = [];
+    for (var f of user.requester)
+        friends.push(f.requestee)
+    for (var r of user.requestee)
+        friends.push(r.requester)   
     return friends;
   }
 

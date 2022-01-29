@@ -1,7 +1,7 @@
 <div class="m-5">
   <h2>Please login using your credentials</h2>
   <div class="p-4">
-     <form (ngSubmit)="onSubmit()" [formGroup]="form">
+     <form (ngSubmit)="logIn()" [formGroup]="form">
        <div class="form-group">
          <label for="name">Username</label>
          <input type="text" [(ngModel)]="user.username" 
@@ -23,6 +23,9 @@
        <button type="submit" [disabled]="!form.valid" 
          class="btn btn-outline-secondary">Log in</button>
      </form>
+  </div>
+  <div *ngIf="isLoginFailed" class="my-2 alert alert-danger">
+    Your username or password is incorrect.
   </div>
    
   </div>

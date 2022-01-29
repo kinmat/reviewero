@@ -26,7 +26,7 @@
     </div>
   </div>
 </div>
-<form *ngIf="!isBookAdded" class="form-inline">
+<form *ngIf="!isBookAdded && isLoggedIn" class="form-inline">
   <div class="form-group mb-2">
     <select
       class="browser-default custom-select"
@@ -37,7 +37,7 @@
       [(ngModel)]="stateId"
     >
       <option *ngFor="let opt of options" [value]="opt.id">
-        {{ opt.name }}
+        {{ formatState(opt.name) }}
       </option>
     </select>
     <button class="btn btn-outline-secondary" (click)="addBook()">
@@ -46,7 +46,7 @@
     </button>
   </div>
 </form>
-<div *ngIf="isBookAdded" class="m-4 d-flex align-items-start">
+<div *ngIf="isBookAdded && isLoggedIn" class="m-4 d-flex align-items-start">
   <button class="btn p-2 btn-outline-secondary" disabled>
     <fa-icon class="mr-2" [icon]="['far', 'check-circle']"></fa-icon>
     Book added
@@ -58,7 +58,7 @@
           Change the book's state in your collection
         </mat-panel-title>
         <mat-panel-description>
-          Currently: {{ usersBookItem.state.name }}
+          Currently: {{ formatState(usersBookItem.state.name) }}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form class="form-inline">
@@ -71,7 +71,7 @@
             [(ngModel)]="stateId"
           >
             <option *ngFor="let opt of options" [value]="opt.id">
-              {{ opt.name }}
+              {{ formatState(opt.name) }}
             </option>
           </select>
           <button
@@ -90,7 +90,7 @@
 </div>
 
 <hr />
-<mat-accordion *ngIf="isBookAdded && !userHasReview">
+<mat-accordion *ngIf="isBookAdded && !userHasReview && isLoggedIn">
   <mat-expansion-panel hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>

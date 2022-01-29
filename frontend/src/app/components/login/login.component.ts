@@ -1,5 +1,4 @@
 import { TokenStorageService } from './../../services/token-storage.service';
-import { AuthenticationService } from './../../services/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -42,7 +41,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSubmit(): void {
+  logIn(): void {
 
     this.authService.login(this.user.username, this.user.password).subscribe(
       data => {

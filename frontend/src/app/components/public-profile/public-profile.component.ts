@@ -17,7 +17,7 @@ export class PublicProfileComponent implements OnInit {
   requested: boolean;
   isFriend: boolean;
   toReadList: Book[] = [];
-  readList: Book[]=[];
+  readList: Book[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -37,26 +37,32 @@ export class PublicProfileComponent implements OnInit {
           this.setRequested();
         });
       });
-     
     });
   }
   setToReadList() {
-    this.toReadList = this.userService.getBookListByState(this.profileUser, "to_read");
+    this.toReadList = this.userService.getBookListByState(
+      this.profileUser,
+      'to_read'
+    );
   }
 
   setReadList() {
-    this.readList = this.userService.getBookListByState(this.profileUser, "read");
+    this.readList = this.userService.getBookListByState(
+      this.profileUser,
+      'read'
+    );
   }
 
   areFriends() {
-    let friends = this.userService.getAcceptedFriends(this.loggedInUser);
-    for (var f of friends) {
-      if (f.id == this.profileUser.id) {
-        this.isFriend = true;
-        return;
+    if (this.loggedInUser.id == this.profileUser.id) this.isFriend = true;
+    else {
+      let friends = this.userService.getAcceptedFriends(this.loggedInUser);
+      for (var f of friends) {
+        if (f.id == this.profileUser.id) {
+          this.isFriend = true;
+          return;
+        } else this.isFriend = false;
       }
-      else if (this.loggedInUser.id == this.profileUser.id) this.isFriend = true;
-      else this.isFriend = false;
     }
   }
 
@@ -64,14 +70,16 @@ export class PublicProfileComponent implements OnInit {
     this.requested = false;
     for (var f of this.loggedInUser.requester)
       if (f.requestee.id == this.profileUser.id && !f.accepted) {
-        this.requested = true; break;
+        this.requested = true;
+        break;
       }
   }
 
   addFriend() {
-    this.userService.addFriendship(this.loggedInUser, this.profileUser).subscribe(() =>
-      this.authService.refreshSave())
-      this.requested = true;
+    this.userService
+      .addFriendship(this.loggedInUser, this.profileUser)
+      .subscribe(() => this.authService.refreshSave());
+    this.requested = true;
   }
 
   changeRoute(event) {

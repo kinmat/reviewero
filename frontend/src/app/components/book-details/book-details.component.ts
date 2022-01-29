@@ -24,7 +24,8 @@ export class BookDetailsComponent {
   options: BookState[];
   reviews: Review[] = [];
   userHasReview: boolean;
-  newReview: Review= new Review();
+  newReview: Review = new Review();
+  isLoggedIn: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,44 +43,49 @@ export class BookDetailsComponent {
   }
   setCurrentUser() {
     this.authService.currentUser.subscribe((data) => {
-      let user_id = data.id;
-      this.authService.getUserById(user_id).subscribe((user) => {
-        this.currentUser = user;
+      if (data) {
+        this.isLoggedIn = true;
+        let user_id = data.id;
+        this.authService.getUserById(user_id).subscribe((user) => {
+          this.currentUser = user;
+          this.setBook(this.id);
+        });
+      } else {
+        this.isLoggedIn = false;
         this.setBook(this.id);
-      });
+      }
     });
   }
 
   setBook(id: number) {
     this.bookService.getBookByID(id).subscribe((data) => {
       this.book = data;
-      this.setIsBookAdded();
+      if (this.isLoggedIn) this.setIsBookAdded();
       this.setReviews();
     });
   }
   setReviews() {
-    this.bookService.getReviewsByBookId(this.book.id).subscribe(data => {
+    this.bookService.getReviewsByBookId(this.book.id).subscribe((data) => {
       this.reviews = data;
-      let rev = data.find(r => r.user.id == this.currentUser.id)
-      console.log(rev)
-      if(rev) this.userHasReview = true;
-      else this.userHasReview = false;
-      console.log(this.userHasReview)
-      
-   })
+      if (this.isLoggedIn) {
+        let rev = data.find((r) => r.user.id == this.currentUser.id);
+        if (rev) this.userHasReview = true;
+        else this.userHasReview = false;
+      }
+    });
   }
 
   formatDate(date) {
-    return new Date(date).toLocaleString()
+    return new Date(date).toLocaleString();
   }
 
   addReview() {
     this.newReview.user = this.currentUser;
     this.newReview.book = this.book;
     this.newReview.dateAdded = new Date();
-    this.bookService.addReview(this.newReview).subscribe(func => {
-      this.setReviews()
-    })
+    this.bookService.addReview(this.newReview).subscribe((func) => {
+      this.setReviews();
+    });
   }
 
   onAuthorClick(id: number) {
@@ -98,16 +104,16 @@ export class BookDetailsComponent {
   addBook() {
     this.isBookAdded = true;
     this.userHasReview = false;
-    let state = this.options.find(o => o.id == this.stateId);
-    let item = new BookListItem(
-      this.currentUser,
-      this.book,
-      state,
-      new Date()
-    );
-    this.bookService.addBookListItem(item).subscribe(data => {
-      this.usersBookItem=data
+    let state = this.options.find((o) => o.id == this.stateId);
+    let item = new BookListItem(this.currentUser, this.book, state, new Date());
+    this.bookService.addBookListItem(item).subscribe((data) => {
+      this.usersBookItem = data;
     });
+  }
+
+  formatState(state: string) {
+    let words = state.split('_');
+    return words.join(' ');
   }
 
   setStates() {
@@ -118,14 +124,9 @@ export class BookDetailsComponent {
   }
 
   changeState() {
-    let state = this.options.find(o => o.id == this.stateId);
+    let state = this.options.find((o) => o.id == this.stateId);
     this.usersBookItem.state = state;
-    let item = new BookListItem(
-      this.currentUser,
-      this.book,
-      state,
-      new Date()
-    );
+    let item = new BookListItem(this.currentUser, this.book, state, new Date());
     this.bookService.changeBookListItemState(item).subscribe();
   }
 }

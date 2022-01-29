@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit  {
   otherUser: User;
   msgs: ChatMessage[]= []
   
-  constructor(public messageService: WebSocketService, private route: ActivatedRoute,
+  constructor(public websocketService: WebSocketService, private route: ActivatedRoute,
     private authService: AuthService) {
     this.msgs = [];
     this.subscribeToIncomingMessages();
@@ -34,8 +34,8 @@ export class ChatComponent implements OnInit  {
 
   subscribeToIncomingMessages() {
     const that = this;
-    this.messageService.stompClient.connect({}, function(frame) {
-      that.messageService.stompClient.subscribe("/user/" + that.loggedInUser.id + "/queue/messages", (message) => {
+    this.websocketService.stompClient.connect({}, function(frame) {
+      that.websocketService.stompClient.subscribe("/user/" + that.loggedInUser.id + "/queue/messages", (message) => {
         that.msgs=[(JSON.parse(message.body)), ...that.msgs];
       });
     });
@@ -59,7 +59,7 @@ export class ChatComponent implements OnInit  {
   sendMessage() {
     if (this.input) {
       var newMsg = new ChatMessage(this.loggedInUser.id, this.otherUser.id,this.input,new Date())
-      this.messageService.sendMessage(newMsg);
+      this.websocketService.sendMessage(newMsg);
       this.msgs = [newMsg, ...this.msgs];
       this.input = '';
     }
@@ -72,7 +72,7 @@ export class ChatComponent implements OnInit  {
   }
 
   setPastMessages() {
-    this.messageService.getLastMessages(this.loggedInUser.id, this.otherUser.id).subscribe(data => {
+    this.websocketService.getLastMessages(this.loggedInUser.id, this.otherUser.id).subscribe(data => {
       this.msgs=[]
       for (var m of data)
         this.msgs.push(m)

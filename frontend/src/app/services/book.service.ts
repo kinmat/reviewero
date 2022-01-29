@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { BookState } from './../model/book-state';
 import { Author } from './../model/author';
 import { Book } from './../model/book';
@@ -10,9 +11,10 @@ import { Review } from '../model/review';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const URL = 'http://localhost:8081/api/books/'
-const L_URL = 'http://localhost:8081/api/list/'
-const R_URL = 'http://localhost:8081/api/review/'
+
+const B_URL = environment.API_URL + 'books/';
+const L_URL = environment.API_URL + 'list/';
+const R_URL = environment.API_URL + 'review/';
 
 
 @Injectable({
@@ -27,20 +29,25 @@ export class BookService {
 
   public findAll(): Observable<Book[]> {
     console.log("all")
-    return this.http.get<Book[]>(URL);
+    return this.http.get<Book[]>(B_URL);
   }
 
   public getBookByID(id: number): Observable<Book> {
-    return this.http.get<Book>(URL+`${id}`);
+    return this.http.get<Book>(B_URL+`${id}`);
   }
 
   public getBooksByAuthor(id: number): Observable<Book[]> {
-    return this.http.get<Book[]>(URL + `author/${id}`)
+    return this.http.get<Book[]>(B_URL + `author/${id}`)
+  }
+  
+  public getBooksByAuthorsName(name: string): Observable<Book[]> {
+    const params = new HttpParams().append('author', name);
+    return this.http.get<Book[]>(B_URL + `search/`, {params})
   }
 
   public getBooksByTitle(title: string): Observable<Book[]> {
     const params = new HttpParams().append('title', title);
-    return this.http.get<Book[]>(URL + `search/`, {params})
+    return this.http.get<Book[]>(B_URL + `search/`, {params})
   }
 
   public addBookListItem(item: BookListItem) {

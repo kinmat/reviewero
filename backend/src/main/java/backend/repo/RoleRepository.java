@@ -11,5 +11,5 @@ import backend.model.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-	Optional<Role> findByName(EnumRole name);
+	Role findByName(EnumRole name);
 }

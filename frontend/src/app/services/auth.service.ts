@@ -1,11 +1,12 @@
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../model/user';
 import { UserService } from './user.service';
 
-const URL = 'http://localhost:8081/api/auth/';
-const user_URL= 'http://localhost:8081/api/user/';
+const URL =environment.API_URL + 'auth/';
+const user_URL= environment.API_URL + 'user/';
 const USER_KEY = 'auth-user';
 
 const httpOptions = {

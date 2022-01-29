@@ -1,6 +1,5 @@
 package backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -12,28 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.model.Author;
-import backend.model.Book;
-import backend.repo.AuthorRepository;
+import backend.services.AuthorService;
 
 @RestController
 @CrossOrigin
 public class AuthorController {
 	@Autowired
-	AuthorRepository authorRepo;
+	AuthorService authorService;
 	
     @RequestMapping("/api/authors")
     public Iterable<Author> getAllAuthors() {
-        return authorRepo.findAll();
+        return authorService.getAllAuthors();
     }
     
     @RequestMapping("/api/authors/{id}")
     public Author getAuthorByID(@PathVariable("id") Long id) {
-    	return authorRepo.findById(id).get();
+    	return authorService.getAuthorByID(id);
     }
     
     @RequestMapping("/api/authors/search")
     public List<Author> searchAuthorByName(@PathParam("name") String name) {
-    	return authorRepo.findByFullNameContains(name);
+    	return authorService.searchAuthorByName(name);
 
     }
     

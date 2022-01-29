@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { Book } from 'src/app/model/book';
-import { BookService } from 'src/app/services/book.service';
 
 @Component({
   selector: 'app-book-list',
@@ -13,13 +11,13 @@ export class BookListComponent implements OnInit {
   @Input() books: Book[];
   @Output() newRoute = new EventEmitter<string>();
   
-  constructor(private bookService: BookService, private router: Router) {
+  constructor() {
   }
 
   ngOnInit(): void {
   }
 
-  goToBookDetails(id: number) {
+  onBookClick(id: number) {
     this.newRoute.emit(`/books/${id}`)
   }
 

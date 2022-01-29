@@ -51,4 +51,7 @@
       </button>
     </form>
   </div>
+  <div *ngIf="isSignUpFailed" class="my-2 alert alert-danger">
+    The username or email is already in use.
+  </div>
 </div>

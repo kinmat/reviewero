@@ -18,8 +18,10 @@ export class SearchComponent implements OnInit {
   books: Book[];
   authors: Author[];
   users: User[];
-  state: string = 'Books';
-  currentSearchList = 'Books';
+  state: string;
+  bookFilter: string;
+  bookFilterOptions: string[] = ['Title', 'Author'];
+  currentSearchList: string;
   options: string[] = ['Books', 'Authors', 'Users'];
 
   constructor(
@@ -31,6 +33,9 @@ export class SearchComponent implements OnInit {
   ) {
     this.route.queryParams.subscribe((params) => {
       this.param = params['param'];
+      this.currentSearchList = this.options[0];
+      this.bookFilter = this.bookFilterOptions[0];
+      this.state = this.options[0];
       if (this.param) this.setBooks();
     });
   }
@@ -38,9 +43,17 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {}
 
   setBooks() {
-    this.bookService.getBooksByTitle(this.param).subscribe((data) => {
+    if (this.bookFilter == "Title") {
+      this.bookService.getBooksByTitle(this.param).subscribe((data) => {
+        this.books = data;
+      });
+    }
+    else if (this.bookFilter == "Author") {
+      this.bookService.getBooksByAuthorsName(this.param).subscribe((data) => {
       this.books = data;
     });
+    }
+
   }
 
   setAuthors() {
@@ -70,6 +83,10 @@ export class SearchComponent implements OnInit {
     if (this.state == 'Books') this.setBooks();
     if (this.state == 'Authors') this.setAuthors();
     if (this.state == 'Users') this.setUsers();
+  }
+
+  isStateBooks() {
+    return this.state == 'Books'
   }
 
 }

@@ -1,6 +1,5 @@
 import { WebSocketService } from 'src/app/services/web-socket.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { AuthenticationService } from './services/authentication.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -99,7 +98,7 @@ import {MatSlider, MatSliderModule} from '@angular/material/slider';
     ]),
     BrowserAnimationsModule,
   ],
-  providers: [AuthenticationService, AuthService, BookService,
+  providers: [AuthService, BookService,
     {
       provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true
     },

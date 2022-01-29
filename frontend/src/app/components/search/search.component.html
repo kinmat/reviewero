@@ -3,7 +3,7 @@
 </div>
 <div class="container">
   <div class="row justify-content-start">
-    <div class="col-md-6 col-sm-12 mb-2">
+    <div class="col">
       <input
         type="search"
         class="form-control"
@@ -25,6 +25,19 @@
         [(ngModel)]="state"
       >
         <option *ngFor="let opt of options" [value]="opt">
+          {{ opt }}
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="isStateBooks()" class="col-md-2 col-sm-12 mb-2">
+      <select
+        class="browser-default custom-select"
+        (selectionChange)="onSelectionChanged($event)"
+        name="opt"
+        [(ngModel)]="bookFilter"
+      >
+        <option *ngFor="let opt of bookFilterOptions" [value]="opt">
           {{ opt }}
         </option>
       </select>

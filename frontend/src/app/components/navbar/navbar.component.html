@@ -19,7 +19,7 @@
 
     <!-- Collapsible wrapper -->
     <div
-      class="collapse navbar-collapse"
+      class="collapse navbar-collapse justify-content-between"
       id="navbarSupportedContent"
       mdbCollapse
       #basicNavbar="mdbCollapse"
@@ -39,10 +39,10 @@
       <!-- Left links -->
 
       <!-- Search form -->
-      <form class="d-flex input-group w-auto me-auto">
+      <form class="d-flex flex-grow-1 input-group w-auto mx-2">
         <input
           type="search"
-          class="form-control"
+          class="form-control flex-grow-1 me-2"
           placeholder="Search books..."
           aria-label="Search"
           [(ngModel)]="searchText"

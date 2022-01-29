@@ -1,14 +1,14 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="card col-md-auto col-sm-6" *ngFor="let user of users">
-      <div class="card-body">
+    <div class="col-md-3 col-sm-12 m-2 p-2" *ngFor="let user of users">
+      <div class="bg-light border rounded p-3">
         <h5>{{ user.username }}</h5>
         <img
           class="w-100"
           src="https://dummyimage.com/150x150/000/fff.png"
           alt="not found image"
         />
-        <div class="py-2">
+        <div class="my-2">
           <a (click)="onUserClick(user.id)" class="btn btn-outline-secondary"
             >Go to Profile</a
           >
